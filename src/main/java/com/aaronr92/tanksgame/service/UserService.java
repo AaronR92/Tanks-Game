@@ -13,17 +13,18 @@ import java.util.Map;
 public class UserService {
     private final Map<Long, User> users = new HashMap<>();
 
-    public void save(User user) {
-        users.put(user.getId(), user);
+    public User save(User user) {
+        return users.put(user.getId(), user);
     }
 
     public User findUserById(long id) {
         if (!users.containsKey(id)) {
-            new User(
+            User user = new User(
                     id,
                     100,
                     LocalDate.now().minusDays(1)
             );
+            save(user);
         }
         return users.get(id);
     }

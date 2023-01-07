@@ -21,6 +21,7 @@ public class TanksGameApplication {
                 return;
 
             Tank vipera = new Tank();
+            vipera.setId(1);
             vipera.setName("Vipera");
             vipera.setDescription("Имеет магазин на 5 снарядов");
             vipera.setNation(Tank.Nation.ITALY);
@@ -38,6 +39,7 @@ public class TanksGameApplication {
                     Tank.Nation.USA,
                     8
             );
+            ambt.setId(2);
 
             Tank su_2_122 = new Tank(
                     "СУ-2-122",
@@ -48,6 +50,7 @@ public class TanksGameApplication {
                     Tank.Nation.USSR,
                     5
             );
+            su_2_122.setId(3);
 
             Tank bz176 = new Tank(
                     "BZ-176",
@@ -58,6 +61,7 @@ public class TanksGameApplication {
                     Tank.Nation.CHINA,
                     8
             );
+            bz176.setId(4);
 
             tankService.save(vipera);
             tankService.save(ambt);

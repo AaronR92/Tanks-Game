@@ -9,21 +9,21 @@ import java.util.Map;
 
 @Service
 public class TankService {
-    private final Map<Long, Tank> items = new HashMap<>();
+    private final Map<Long, Tank> tanks = new HashMap<>();
 
     public void save(Tank tank) {
-        items.put(tank.getId(), tank);
+        tanks.put(tank.getId(), tank);
     }
 
     public Tank findItemById(long id) {
-        return items.get(id);
+        return tanks.get(id);
     }
 
     public void delete(long id) {
-        items.remove(id);
+        tanks.remove(id);
     }
 
     public Collection<Tank> findAll() {
-        return items.values();
+        return tanks.values();
     }
 }

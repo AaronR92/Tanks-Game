@@ -7,7 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class User {
 
@@ -17,7 +19,7 @@ public class User {
 //    @Field("last_open_time")
     @JsonIgnore
     private LocalDate lastOpenTime;
-    private List<Tank> tanks;
+    private Set<Tank> tanks;
 
     @Transient
     private int daysFromLastBoxOpen;
@@ -57,11 +59,13 @@ public class User {
         return this;
     }
 
-    public List<Tank> getTanks() {
+    public Set<Tank> getTanks() {
+        checkSet();
         return tanks;
     }
 
     public User addTank(Tank tank) {
+        checkSet();
         tanks.add(tank);
         return this;
     }
@@ -69,6 +73,12 @@ public class User {
     public User addMoney(float value) {
         this.money += value;
         return this;
+    }
+
+    private void checkSet() {
+        if (tanks == null) {
+            tanks = new HashSet<>();
+        }
     }
 
     public int getDaysFromLastBoxOpen() {
