@@ -2,9 +2,11 @@ package com.aaronr92.tanksgame.service;
 
 import com.aaronr92.tanksgame.model.Tank;
 import com.aaronr92.tanksgame.model.User;
+import com.aaronr92.tanksgame.util.RewardResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Random;
 
@@ -20,29 +22,32 @@ public class BoxService {
         this.userService = userService;
     }
 
-    public Object openBox(long id) {
+    public RewardResponse openBox(long id) {
+        User user = userService.findOrCreate(id);
         Object reward = getReward(id);
-
-        User user = userService.findUserById(id);
+        RewardResponse response = new RewardResponse();
 
         if (reward instanceof Tank tank) {
             if (user.getTanks().contains(tank)) {
                 float tankPrice = tank.getPrice();
                 user.addMoney(tankPrice);
-                return tankPrice;
+                response.setReward(String.valueOf(tankPrice));
             } else {
                 user.addTank(tank);
-                return tank;
+                response.setReward(tank.getName());
             }
         } else {
-            float moneyReward = (float) reward;
-            user.addMoney(moneyReward);
-            return moneyReward;
+            float money = (float) reward;
+            user.addMoney(money);
+            response.setReward(String.valueOf(money));
         }
+
+        userService.save(user);
+        return response;
     }
 
     private Object getReward(long id) {
-        userService.updateBoxOpenTime(id);
+//        userService.updateBoxOpenTime(id);
 
         float chance = random.nextFloat();
 
@@ -51,13 +56,13 @@ public class BoxService {
             log.info("Tank {} has dropped for {}!", tank.getName(), id);
             return tank;
         } else if (chance <= 0.1) {
-            return 400f;
+            return 500f;
         } else if (chance <= 0.3) {
-            return 200f;
+            return 250f;
         } else if (chance <= 0.6) {
-            return 100f;
+            return 150f;
         } else {
-            return 50f;
+            return 100f;
         }
     }
 

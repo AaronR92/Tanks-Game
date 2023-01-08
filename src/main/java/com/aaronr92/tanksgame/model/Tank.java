@@ -1,17 +1,22 @@
 package com.aaronr92.tanksgame.model;
 
-import org.springframework.data.mongodb.core.mapping.Field;
+import jakarta.persistence.*;
 
+@Entity
 public class Tank {
 
+    @Id
     private long id;
 
     private String name;
     private float price;
     private String description;
-//    @Field("tank_class")
+    @Column(name = "tank_class")
+    @Enumerated(EnumType.STRING)
     private Class tankClass;
+    @Enumerated(EnumType.STRING)
     private Type type;
+    @Enumerated(EnumType.STRING)
     private Nation nation;
     private int level;
 

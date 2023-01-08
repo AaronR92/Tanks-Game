@@ -1,28 +1,31 @@
 package com.aaronr92.tanksgame.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
 import org.springframework.data.annotation.Transient;
-import org.springframework.data.mongodb.core.mapping.Field;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
+@Entity
+@Table(name = "_user")
 public class User {
 
+    @Id
     private long id;
 
     private float money;
-//    @Field("last_open_time")
+
+    @Column(name = "last_open_time")
     @JsonIgnore
     private LocalDate lastOpenTime;
-    private Set<Tank> tanks;
 
-    @Transient
-    private int daysFromLastBoxOpen;
+    @JsonManagedReference
+    @ManyToMany
+    private Set<Tank> tanks;
 
     public User() {}
 
@@ -55,6 +58,7 @@ public class User {
     }
 
     public User setLastOpenTime(LocalDate lastOpenTime) {
+        System.out.println("setLastOpenTime");
         this.lastOpenTime = lastOpenTime;
         return this;
     }
@@ -62,6 +66,11 @@ public class User {
     public Set<Tank> getTanks() {
         checkSet();
         return tanks;
+    }
+
+    public User setTanks(Set<Tank> tanks) {
+        this.tanks = tanks;
+        return this;
     }
 
     public User addTank(Tank tank) {

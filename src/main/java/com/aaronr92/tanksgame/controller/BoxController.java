@@ -1,6 +1,7 @@
 package com.aaronr92.tanksgame.controller;
 
 import com.aaronr92.tanksgame.service.BoxService;
+import com.aaronr92.tanksgame.util.RewardResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +19,7 @@ public class BoxController {
     }
 
     @GetMapping(path = "{id}")
-    public ResponseEntity<Object> openBox(@PathVariable long id) {
+    public ResponseEntity<RewardResponse> openBox(@PathVariable long id) {
         return ResponseEntity.ok(boxService.openBox(id));
     }
 }

@@ -1,29 +1,37 @@
 package com.aaronr92.tanksgame.service;
 
 import com.aaronr92.tanksgame.model.Tank;
+import com.aaronr92.tanksgame.repository.TankRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class TankService {
-    private final Map<Long, Tank> tanks = new HashMap<>();
+    private final TankRepository tankRepository;
 
-    public void save(Tank tank) {
-        tanks.put(tank.getId(), tank);
+    public TankService(TankRepository tankRepository) {
+        this.tankRepository = tankRepository;
+    }
+
+    public Tank save(Tank tank) {
+        return tankRepository.save(tank);
     }
 
     public Tank findItemById(long id) {
-        return tanks.get(id);
+        return tankRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Tank not found"
+        ));
     }
 
     public void delete(long id) {
-        tanks.remove(id);
+        tankRepository.deleteById(id);
     }
 
     public Collection<Tank> findAll() {
-        return tanks.values();
+        return tankRepository.findAll();
     }
 }
