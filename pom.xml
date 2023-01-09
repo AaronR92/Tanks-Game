@@ -12,7 +12,7 @@
     <artifactId>Tanks-Game</artifactId>
     <version>1.0</version>
     <name>Tanks-Game</name>
-    <description>Tanks-Game</description>
+    <description>REST game</description>
     <properties>
         <java.version>17</java.version>
     </properties>
