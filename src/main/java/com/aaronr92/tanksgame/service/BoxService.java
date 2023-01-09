@@ -6,7 +6,6 @@ import com.aaronr92.tanksgame.util.RewardResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Random;
 
@@ -32,9 +31,10 @@ public class BoxService {
                 float tankPrice = tank.getPrice();
                 user.addMoney(tankPrice);
                 response.setReward(String.valueOf(tankPrice));
+                response.setTank(tank.getName());
             } else {
                 user.addTank(tank);
-                response.setReward(tank.getName());
+                response.setReward(" " + tank.getName());
             }
         } else {
             float money = (float) reward;
@@ -47,7 +47,7 @@ public class BoxService {
     }
 
     private Object getReward(long id) {
-//        userService.updateBoxOpenTime(id);
+        userService.updateBoxOpenTime(id);
 
         float chance = random.nextFloat();
 
@@ -67,6 +67,6 @@ public class BoxService {
     }
 
     private Tank getTank() {
-        return tankService.findItemById(random.nextInt(3) + 1);
+        return tankService.findTankById(random.nextInt(3) + 1);
     }
 }

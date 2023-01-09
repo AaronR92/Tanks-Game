@@ -3,7 +3,9 @@ package com.aaronr92.tanksgame.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import org.springframework.data.annotation.Transient;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -17,9 +19,8 @@ public class User {
     @Id
     private long id;
 
-    private float money;
+    private int money;
 
-    @Column(name = "last_open_time")
     @JsonIgnore
     private LocalDate lastOpenTime;
 
@@ -27,11 +28,14 @@ public class User {
     @ManyToMany
     private Set<Tank> tanks;
 
-    public User() {}
+    private int maxHangarSize;
 
-    public User(long id, float money, LocalDate lastOpenTime) {
+    public User() { }
+
+    public User(long id, int money, int maxHangarSize, LocalDate lastOpenTime) {
         this.id = id;
         this.money = money;
+        this.maxHangarSize = maxHangarSize;
         this.lastOpenTime = lastOpenTime;
     }
 
@@ -39,28 +43,24 @@ public class User {
         return id;
     }
 
-    public User setId(long id) {
+    public void setId(long id) {
         this.id = id;
-        return this;
     }
 
-    public float getMoney() {
+    public int getMoney() {
         return money;
     }
 
-    public User setMoney(float money) {
+    public void setMoney(int money) {
         this.money = money;
-        return this;
     }
 
     public LocalDate getLastOpenTime() {
         return lastOpenTime;
     }
 
-    public User setLastOpenTime(LocalDate lastOpenTime) {
-        System.out.println("setLastOpenTime");
+    public void setLastOpenTime(LocalDate lastOpenTime) {
         this.lastOpenTime = lastOpenTime;
-        return this;
     }
 
     public Set<Tank> getTanks() {
@@ -68,29 +68,56 @@ public class User {
         return tanks;
     }
 
-    public User setTanks(Set<Tank> tanks) {
+    public void setTanks(Set<Tank> tanks) {
         this.tanks = tanks;
-        return this;
     }
 
-    public User addTank(Tank tank) {
+    public void addTank(Tank tank) {
         checkSet();
         tanks.add(tank);
-        return this;
     }
 
-    public User addMoney(float value) {
+    public void removeTank(Tank tank) {
+        checkSet();
+        tanks.remove(tank);
+    }
+
+    public void addMoney(float value) {
         this.money += value;
-        return this;
+    }
+
+    public int getMaxHangarSize() {
+        return maxHangarSize;
+    }
+
+    public void setMaxHangarSize(int maxHangarSize) {
+        this.maxHangarSize = maxHangarSize;
+    }
+
+    public void increaseMaxHangarSize(int value) {
+        this.maxHangarSize += value;
+    }
+
+    public void decreaseMaxHangarSize(int value) {
+        this.maxHangarSize -= value;
+    }
+
+    public int getDaysFromLastBoxOpen() {
+        return Period.between(lastOpenTime, LocalDate.now()).getDays();
     }
 
     private void checkSet() {
         if (tanks == null) {
             tanks = new HashSet<>();
         }
+
+        if (tanks.size() == maxHangarSize) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Your hangar is full"
+            );
+        }
     }
 
-    public int getDaysFromLastBoxOpen() {
-        return Period.between(lastOpenTime, LocalDate.now()).getDays();
-    }
+
 }

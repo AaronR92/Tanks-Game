@@ -6,10 +6,11 @@ import jakarta.persistence.*;
 public class Tank {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     private String name;
-    private float price;
+    private int price;
     private String description;
     @Column(name = "tank_class")
     @Enumerated(EnumType.STRING)
@@ -22,7 +23,7 @@ public class Tank {
 
     public Tank() {}
 
-    public Tank(String name, float price, String description, Class tankClass, Type type, Nation nation, int level) {
+    public Tank(String name, int price, String description, Class tankClass, Type type, Nation nation, int level) {
         this.name = name;
         this.price = price;
         this.description = description;
@@ -50,11 +51,11 @@ public class Tank {
         return this;
     }
 
-    public float getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public Tank setPrice(float price) {
+    public Tank setPrice(int price) {
         this.price = price;
         return this;
     }

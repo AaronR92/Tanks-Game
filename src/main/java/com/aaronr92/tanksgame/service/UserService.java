@@ -31,6 +31,7 @@ public class UserService {
         return new User(
                 id,
                 100,
+                4,
                 LocalDate.now().minusDays(1)
         );
     }

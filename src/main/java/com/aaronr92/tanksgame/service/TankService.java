@@ -1,5 +1,6 @@
 package com.aaronr92.tanksgame.service;
 
+import com.aaronr92.tanksgame.exception.TankNotFoundException;
 import com.aaronr92.tanksgame.model.Tank;
 import com.aaronr92.tanksgame.repository.TankRepository;
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,7 @@ public class TankService {
         return tankRepository.save(tank);
     }
 
-    public Tank findItemById(long id) {
+    public Tank findTankById(long id) {
         return tankRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Tank not found"
@@ -33,5 +34,10 @@ public class TankService {
 
     public Collection<Tank> findAll() {
         return tankRepository.findAll();
+    }
+
+    public Tank findTankByName(String name) {
+        return tankRepository.findTankByName(name)
+                .orElseThrow(TankNotFoundException::new);
     }
 }
