@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.aaronr92</groupId>
     <artifactId>Tanks-Game</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0</version>
     <name>Tanks-Game</name>
     <description>Tanks-Game</description>
     <properties>
