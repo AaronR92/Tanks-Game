@@ -2,28 +2,35 @@ package com.aaronr92.tanksgame.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.ReadOnlyProperty;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 @Entity
 public class Expedition {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
     @OneToOne
     private User user;
     @OneToOne
     private Tank tank;
     @JsonIgnore
-    @CreatedDate
+    @CreationTimestamp
     private LocalDateTime startTime;
     @ReadOnlyProperty
     transient private String remainingTime;
+    @Enumerated(EnumType.STRING)
     private Period period;
+    @Basic
+    private boolean finished;
 
     public Expedition() { }
 
@@ -33,13 +40,14 @@ public class Expedition {
         this.tank = tank;
         this.startTime = startTime;
         this.period = period;
+        this.finished = false;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -74,8 +82,8 @@ public class Expedition {
 
         return String.format(
                 "%02d:%02d",
-                hoursRem,
-                minutesRem - TimeUnit.HOURS.toMinutes(hoursRem)
+                Math.abs(hoursRem),
+                Math.abs(minutesRem - TimeUnit.HOURS.toMinutes(hoursRem))
         );
     }
 
@@ -87,12 +95,27 @@ public class Expedition {
         this.period = period;
     }
 
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public void setFinished(boolean finished) {
+        this.finished = finished;
+    }
+
+    public Instant getFinishTime() {
+        return Instant.parse(startTime + "Z")
+                .plus(period.getHours(), ChronoUnit.HOURS);
+    }
+
     public enum Period {
         ONE(1),
         FOUR(4),
+        EIGHT(8),
         TWELVE(12),
         TWENTY_TWO(24);
 
+        private static final Random random = new Random();
         private final int hours;
 
         Period(int hours) {
@@ -101,6 +124,10 @@ public class Expedition {
 
         public int getHours() {
             return hours;
+        }
+
+        public static Period random() {
+            return values()[random.nextInt(values().length)];
         }
     }
 }

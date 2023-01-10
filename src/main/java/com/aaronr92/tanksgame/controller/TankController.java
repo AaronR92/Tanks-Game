@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/v1/tank")
+@RequestMapping("/api/v1/tank")
 public class TankController {
 
     private final TankService tankService;
