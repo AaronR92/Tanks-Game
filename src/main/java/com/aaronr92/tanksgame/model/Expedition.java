@@ -103,6 +103,7 @@ public class Expedition {
         this.finished = finished;
     }
 
+    @JsonIgnore
     public Instant getFinishTime() {
         return Instant.parse(startTime + "Z")
                 .plus(period.getHours(), ChronoUnit.HOURS);
@@ -113,7 +114,7 @@ public class Expedition {
         FOUR(4),
         EIGHT(8),
         TWELVE(12),
-        TWENTY_TWO(24);
+        TWENTY_FOUR(24);
 
         private static final Random random = new Random();
         private final int hours;

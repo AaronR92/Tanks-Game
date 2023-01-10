@@ -36,7 +36,7 @@ public class ExpeditionController {
     @PostMapping
     public ResponseEntity<Expedition> createExpedition(
             @RequestParam Long userId,
-            @RequestParam Long tankId
+            @RequestParam String tankName
     ) {
         URI uri = URI.create(ServletUriComponentsBuilder
                 .fromCurrentContextPath()
@@ -44,6 +44,6 @@ public class ExpeditionController {
                 .toUriString());
 
         return ResponseEntity.created(uri)
-                .body(expeditionService.save(userId, tankId));
+                .body(expeditionService.save(userId, tankName));
     }
 }

@@ -38,13 +38,17 @@ public class ExpeditionService {
         this.random = new Random();
     }
 
-    public Expedition save(Long userId, Long tankId) {
+    public Expedition save(Long userId, String tankName) {
         checkUser(userId);
 
         User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
-        Tank tank = tankRepository.findById(tankId)
+        Tank tank = tankRepository.findTankByName(tankName)
                 .orElseThrow(TankNotFoundException::new);
+
+        if (!user.getTanks().contains(tank))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "User does not have this tank");
 
         Expedition expedition = new Expedition();
         expedition.setUser(user);
