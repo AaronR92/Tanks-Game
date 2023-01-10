@@ -69,18 +69,14 @@ public class Expedition {
 
     public String getRemainingTime() {
         LocalDateTime finishTime = startTime.plusHours(period.getHours());
-        long period = Duration.between(finishTime, LocalDateTime.now()).toMillis();
+        long minutesRem = Duration.between(finishTime, LocalDateTime.now()).toMinutes();
+        long hoursRem = TimeUnit.MINUTES.toHours(minutesRem);
 
         return String.format(
                 "%02d:%02d",
-                TimeUnit.MILLISECONDS.toHours(period),
-                TimeUnit.MILLISECONDS.toMinutes(period) -
-                        TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(period))
+                hoursRem,
+                minutesRem - TimeUnit.HOURS.toMinutes(hoursRem)
         );
-    }
-
-    public void setRemainingTime(String remainingTime) {
-        this.remainingTime = remainingTime;
     }
 
     public Period getPeriod() {
