@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  app:
+    image: 'tanks-game:latest'
+    build:
+      context: .
+    container_name: tanks-game
+    ports:
+      - '9099:9099'
+    depends_on:
+      - postgres
+
+  postgres:
+    image: 'postgres'
+    container_name: postgresql
+    ports:
+      - '5433:5432'
+    environment:
+      - POSTGRES_USER=springUser
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=tanks_game
+      - PGDATA=/data/postgres
+    volumes:
+      - postgres:/data/postgres
+networks:
+  postgres:
+    driver: bridge
+  app:
+    driver: bridge
+
+volumes:
+  postgres:
+    external: true

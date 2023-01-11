@@ -3,9 +3,9 @@ spring:
   application:
     name: "Tanks-Game"
   datasource:
-    url: jdbc:postgresql://localhost:5432/tanks_game
-    username: gameApp
-    password: password
+    url: jdbc:postgresql://host.docker.internal:5433/tanks_game
+    username: "springUser"
+    password: "password"
   jpa:
     hibernate:
       ddl-auto: update
