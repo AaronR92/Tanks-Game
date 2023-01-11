@@ -2,12 +2,12 @@ version: '3.8'
 
 services:
   app:
-    image: 'tanks-game:latest'
+    image: 'aaronr92/tanks-game:1.0'
     build:
       context: .
     container_name: tanks-game
     ports:
-      - '9099:9099'
+      - '9098:9099'
     depends_on:
       - postgres
 
