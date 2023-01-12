@@ -55,7 +55,7 @@ public class AppConfiguration {
                     "СУ-2-122",
                     3100,
                     "Обладает механикой двуствольных орудий",
-                    Tank.Class.MEDIUM,
+                    Tank.Class.TANK_DESTROYER,
                     Tank.Type.PREMIUM,
                     Tank.Nation.USSR,
                     5
