@@ -1,14 +1,15 @@
 package com.aaronr92.tanksgame.model;
 
 import jakarta.persistence.*;
+import org.springframework.data.annotation.ReadOnlyProperty;
 
 @Entity
 public class Tank {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @ReadOnlyProperty
     private long id;
-
     private String name;
     private int price;
     private String description;

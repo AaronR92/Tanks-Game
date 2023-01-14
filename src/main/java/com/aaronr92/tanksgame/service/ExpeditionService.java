@@ -38,7 +38,14 @@ public class ExpeditionService {
         this.random = new Random();
     }
 
-    public Expedition save(Long userId, String tankName) {
+    /**
+     * Saves new expedition
+     * @param userId an id of a user
+     * @param tankName a name of a tank
+     * @return saved expedition
+     * @throws ResponseStatusException if user does not have this tank
+     */
+    public Expedition save(Long userId, String tankName) throws ResponseStatusException {
         checkUser(userId);
 
         User user = userRepository.findById(userId)
@@ -68,25 +75,48 @@ public class ExpeditionService {
         return expedition;
     }
 
+    /**
+     * Saves user
+     * @param user user to save
+     * @return saved user
+     */
     public User save(User user) {
         return userRepository.save(user);
     }
 
+    /**
+     * Removes expedition from database
+     * @param id an id of an expedition
+     */
     public void delete(Long id) {
         expeditionRepository.deleteById(id);
     }
 
+    /**
+     * Finds expedition by id
+     * @param id an id of an expedition
+     * @return found expedition
+     */
     public Expedition findById(Long id) {
         return expeditionRepository.findById(id)
                 .orElseThrow(ExpeditionNotFoundException::new);
     }
 
+    /**
+     * Finds expedition by user id
+     * @param userId an id of a user
+     * @return found expedition
+     */
     public Expedition findByUserId(Long userId) {
         return expeditionRepository
                 .findExpeditionByUser_IdAndFinishedFalse(userId)
                 .orElseThrow(ExpeditionNotFoundException::new);
     }
 
+    /**
+     * Validates user
+     * @param userId an id of a user
+     */
     private void checkUser(long userId) {
         if (expeditionRepository.existsByUser_IdAndFinishedFalse(userId)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT,
@@ -94,6 +124,12 @@ public class ExpeditionService {
         }
     }
 
+    /**
+     * Gives rewards to a user for expedition
+     * @param user a user
+     * @param tank a tank
+     * @param expeditionPeriod period of an expedition
+     */
     public void giveRewards(User user, Tank tank, Expedition.Period expeditionPeriod) {
         int period = expeditionPeriod.getHours();
         int level = tank.getLevel();

@@ -21,6 +21,11 @@ public class BoxService {
         this.userService = userService;
     }
 
+    /**
+     * Opens box, saves rewards and returns result of the action
+     * @param id an id of a user
+     * @return result of box opening
+     */
     public RewardResponse openBox(long id) {
         User user = userService.findOrCreate(id);
         Object reward = getReward(id);
@@ -46,6 +51,11 @@ public class BoxService {
         return response;
     }
 
+    /**
+     * Calculates reward
+     * @param id an id of a user
+     * @return Integer or Tank
+     */
     private Object getReward(long id) {
         userService.updateBoxOpenTime(id);
 
@@ -66,6 +76,10 @@ public class BoxService {
         }
     }
 
+    /**
+     * Returns random tank from database in bound of 4
+     * @return found tank
+     */
     private Tank getTank() {
         return tankService.findTankById(random.nextInt(3) + 1);
     }
