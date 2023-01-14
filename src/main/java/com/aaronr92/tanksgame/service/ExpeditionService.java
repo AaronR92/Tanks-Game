@@ -98,11 +98,12 @@ public class ExpeditionService {
         int period = expeditionPeriod.getHours();
         int level = tank.getLevel();
 
-        int periodReward = 10 * period;
+        int periodReward = 3 * period;
 
-        float levelReward = periodReward + (4 * periodReward * Float.parseFloat(level == 10 ? "1f" : "0." + level));
+        float levelReward = periodReward + (15 * periodReward *
+                Float.parseFloat(level == 10 ? "1f" : "0." + level));
 
-        float rawReward = levelReward * 1.5f;
+        float rawReward = levelReward * 1.65f;
 
         float randAdd = random.nextFloat(0.1f);
 

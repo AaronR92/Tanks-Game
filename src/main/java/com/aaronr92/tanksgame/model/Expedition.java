@@ -3,7 +3,6 @@ package com.aaronr92.tanksgame.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.ReadOnlyProperty;
 
 import java.time.Duration;
@@ -16,7 +15,9 @@ import java.util.concurrent.TimeUnit;
 @Entity
 public class Expedition {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(generator = "expeditionSeq")
+    @SequenceGenerator(name = "expeditionSeq", sequenceName = "EXPEDITION_SEQ", allocationSize = 1)
+    @ReadOnlyProperty
     private Long id;
     @OneToOne
     private User user;
@@ -111,10 +112,11 @@ public class Expedition {
 
     public enum Period {
         ONE(1),
+        TWO(2),
+        THREE(3),
         FOUR(4),
-        EIGHT(8),
-        TWELVE(12),
-        TWENTY_FOUR(24);
+        FIVE(5),
+        SIX(6);
 
         private static final Random random = new Random();
         private final int hours;
