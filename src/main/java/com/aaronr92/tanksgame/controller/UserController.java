@@ -2,6 +2,7 @@ package com.aaronr92.tanksgame.controller;
 
 import com.aaronr92.tanksgame.model.User;
 import com.aaronr92.tanksgame.service.UserService;
+import com.aaronr92.tanksgame.util.Operation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,5 +25,14 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable long id) {
         userService.remove(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUser(
+            @PathVariable Long id,
+            @RequestParam String tankName,
+            @RequestParam Operation operation
+    ) {
+        return ResponseEntity.ok(userService.updateUser(id, tankName, operation));
     }
 }

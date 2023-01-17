@@ -18,3 +18,5 @@ spring:
 server:
   port:
     9099
+  error:
+    include-message: always

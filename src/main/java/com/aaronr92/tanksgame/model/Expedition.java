@@ -15,8 +15,7 @@ import java.util.concurrent.TimeUnit;
 @Entity
 public class Expedition {
     @Id
-    @GeneratedValue(generator = "expeditionSeq")
-    @SequenceGenerator(name = "expeditionSeq", sequenceName = "EXPEDITION_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     @ReadOnlyProperty
     private Long id;
     @OneToOne

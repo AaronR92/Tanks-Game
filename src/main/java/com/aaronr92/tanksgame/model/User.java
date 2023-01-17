@@ -1,5 +1,6 @@
 package com.aaronr92.tanksgame.model;
 
+import com.aaronr92.tanksgame.exception.InsufficientFundsException;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -82,8 +83,12 @@ public class User {
         tanks.remove(tank);
     }
 
-    public void addMoney(float value) {
+    public void addMoney(int value) {
         this.money += value;
+    }
+
+    public void subtractMoney(int value) {
+        this.money -= value;
     }
 
     public int getMaxHangarSize() {

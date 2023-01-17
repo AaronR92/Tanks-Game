@@ -33,7 +33,7 @@ public class BoxService {
 
         if (reward instanceof Tank tank) {
             if (user.getTanks().contains(tank)) {
-                float tankPrice = tank.getPrice();
+                int tankPrice = tank.getPrice();
                 user.addMoney(tankPrice);
                 response.setReward(String.valueOf(tankPrice));
                 response.setTank(tank.getName());
@@ -42,7 +42,7 @@ public class BoxService {
                 response.setReward(" " + tank.getName());
             }
         } else {
-            float money = (float) reward;
+            int money = (int) reward;
             user.addMoney(money);
             response.setReward(String.valueOf(money));
         }

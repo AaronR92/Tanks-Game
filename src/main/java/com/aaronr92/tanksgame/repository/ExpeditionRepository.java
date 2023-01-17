@@ -1,6 +1,7 @@
 package com.aaronr92.tanksgame.repository;
 
 import com.aaronr92.tanksgame.model.Expedition;
+import com.aaronr92.tanksgame.model.Tank;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,5 +14,7 @@ public interface ExpeditionRepository extends JpaRepository<Expedition, Long> {
 
     Collection<Expedition> findExpeditionsByFinishedFalse();
 
-    Boolean existsByUser_IdAndFinishedFalse(Long userId);
+    boolean existsByUser_IdAndFinishedFalse(Long userId);
+
+    boolean existsByUser_IdAndTank_IdAndFinishedFalse(Long userId, Long tankId);
 }

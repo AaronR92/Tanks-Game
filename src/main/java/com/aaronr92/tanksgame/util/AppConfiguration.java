@@ -37,12 +37,12 @@ public class AppConfiguration {
             vipera.setNation(Tank.Nation.ITALY);
             vipera.setType(Tank.Type.PREMIUM);
             vipera.setTankClass(Tank.Class.TANK_DESTROYER);
-            vipera.setPrice(5000);
+            vipera.setPrice(11500);
             vipera.setLevel(8);
 
             Tank ambt = new Tank(
                     "AMBT",
-                    5500,
+                    11000,
                     "Магазин с системой дозарядки на 3 снаряда",
                     Tank.Class.MEDIUM,
                     Tank.Type.PREMIUM,
@@ -53,7 +53,7 @@ public class AppConfiguration {
 
             Tank su_2_122 = new Tank(
                     "СУ-2-122",
-                    3100,
+                    6200,
                     "Обладает механикой двуствольных орудий",
                     Tank.Class.TANK_DESTROYER,
                     Tank.Type.PREMIUM,
@@ -64,7 +64,7 @@ public class AppConfiguration {
 
             Tank bz176 = new Tank(
                     "BZ-176",
-                    8500,
+                    13000,
                     "Имеет ракетные ускорители",
                     Tank.Class.HEAVY,
                     Tank.Type.PREMIUM,
