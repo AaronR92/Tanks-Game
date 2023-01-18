@@ -66,13 +66,13 @@ public class BoxService {
             log.info("Tank {} has dropped for {}!", tank.getName(), id);
             return tank;
         } else if (chance <= 0.1) {
-            return 500f;
+            return 500;
         } else if (chance <= 0.3) {
-            return 250f;
+            return 250;
         } else if (chance <= 0.6) {
-            return 150f;
+            return 150;
         } else {
-            return 100f;
+            return 100;
         }
     }
 
