@@ -116,7 +116,7 @@ public class UserService {
     private void buyTank(User user, Tank tank) {
         int price = tank.getPrice();
         if (user.getTanks().contains(tank))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
                     "You already have this tank");
         if (user.getMoney() < price)
             throw new InsufficientFundsException();
