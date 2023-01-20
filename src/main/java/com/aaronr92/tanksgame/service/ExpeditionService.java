@@ -10,6 +10,10 @@ import com.aaronr92.tanksgame.repository.ExpeditionRepository;
 import com.aaronr92.tanksgame.repository.TankRepository;
 import com.aaronr92.tanksgame.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Service;
@@ -149,5 +153,10 @@ public class ExpeditionService {
 
         user.addMoney(reward);
         save(user);
+    }
+
+    public Page<Expedition> getExpeditionLogPage(long userId, int page) {
+        Pageable pageable = PageRequest.of(page, 5, Sort.by("startTime").descending());
+        return expeditionRepository.findExpeditionsByUser_Id(userId, pageable);
     }
 }

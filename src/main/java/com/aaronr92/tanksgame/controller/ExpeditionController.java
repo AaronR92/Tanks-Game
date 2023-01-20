@@ -1,8 +1,8 @@
 package com.aaronr92.tanksgame.controller;
 
 import com.aaronr92.tanksgame.model.Expedition;
-import com.aaronr92.tanksgame.model.User;
 import com.aaronr92.tanksgame.service.ExpeditionService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -31,6 +31,14 @@ public class ExpeditionController {
             @PathVariable Long id
     ) {
         return ResponseEntity.ok(expeditionService.findById(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<Expedition>> getExpeditionPage(
+            @RequestParam long id,
+            @RequestParam(defaultValue = "0") int page
+    ) {
+        return ResponseEntity.ok(expeditionService.getExpeditionLogPage(id, page));
     }
 
     @PostMapping
