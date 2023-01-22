@@ -72,7 +72,8 @@ public class ExpeditionService {
 
         taskScheduler.schedule(() -> {
             expedition.setFinished(true);
-            giveRewards(user, tank, period);
+            int reward = giveRewards(user, tank, period);
+            expedition.setReward(reward);
             expeditionRepository.save(expedition);
         }, expedition.getFinishTime());
 
@@ -134,7 +135,7 @@ public class ExpeditionService {
      * @param tank a tank
      * @param expeditionPeriod period of an expedition
      */
-    public void giveRewards(User user, Tank tank, Expedition.Period expeditionPeriod) {
+    public int giveRewards(User user, Tank tank, Expedition.Period expeditionPeriod) {
         int period = expeditionPeriod.getHours();
         int level = tank.getLevel();
 
@@ -153,10 +154,11 @@ public class ExpeditionService {
 
         user.addMoney(reward);
         save(user);
+        return reward;
     }
 
     public Page<Expedition> getExpeditionLogPage(long userId, int page) {
         Pageable pageable = PageRequest.of(page, 5, Sort.by("startTime").descending());
-        return expeditionRepository.findExpeditionsByUser_Id(userId, pageable);
+        return expeditionRepository.findExpeditionsByUser_IdAndFinishedIsTrue(userId, pageable);
     }
 }

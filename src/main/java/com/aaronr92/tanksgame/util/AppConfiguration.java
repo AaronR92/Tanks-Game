@@ -92,7 +92,12 @@ public class AppConfiguration {
 
             expeditions.forEach(expedition -> taskScheduler.schedule(() -> {
                 expedition.setFinished(true);
-                service.giveRewards(expedition.getUser(), expedition.getTank(), expedition.getPeriod());
+                int reward = service.giveRewards(
+                        expedition.getUser(),
+                        expedition.getTank(),
+                        expedition.getPeriod()
+                );
+                expedition.setReward(reward);
                 repository.save(expedition);
             }, expedition.getFinishTime()));
         };

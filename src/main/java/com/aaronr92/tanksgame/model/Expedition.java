@@ -22,13 +22,15 @@ public class Expedition {
     private User user;
     @OneToOne
     private Tank tank;
-    @JsonIgnore
+    @ReadOnlyProperty
     @CreationTimestamp
     private LocalDateTime startTime;
     @ReadOnlyProperty
     transient private String remainingTime;
     @Enumerated(EnumType.STRING)
     private Period period;
+    @ReadOnlyProperty
+    private Integer reward;
     @Basic
     private boolean finished;
 
@@ -101,6 +103,16 @@ public class Expedition {
 
     public void setFinished(boolean finished) {
         this.finished = finished;
+    }
+
+    public int getReward() {
+        if (!finished)
+            return 0;
+        return reward;
+    }
+
+    public void setReward(int reward) {
+        this.reward = reward;
     }
 
     @JsonIgnore

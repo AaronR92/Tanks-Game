@@ -20,5 +20,5 @@ public interface ExpeditionRepository extends JpaRepository<Expedition, Long> {
 
     boolean existsByUser_IdAndTank_IdAndFinishedFalse(Long userId, Long tankId);
 
-    Page<Expedition> findExpeditionsByUser_Id(long userId, Pageable pageable);
+    Page<Expedition> findExpeditionsByUser_IdAndFinishedIsTrue(long userId, Pageable pageable);
 }
