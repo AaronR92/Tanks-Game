@@ -10,6 +10,8 @@ import com.aaronr92.tanksgame.repository.ExpeditionRepository;
 import com.aaronr92.tanksgame.repository.TankRepository;
 import com.aaronr92.tanksgame.repository.UserRepository;
 import com.aaronr92.tanksgame.util.Operation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -19,15 +21,18 @@ import java.util.Optional;
 
 @Service
 public class UserService {
+    private final Logger log;
     private final UserRepository userRepository;
     private final TankRepository tankRepository;
     private final ExpeditionRepository expeditionRepository;
+    private final int SLOT_PRICE = 1250;
 
     public UserService(UserRepository userRepository, TankRepository tankRepository,
                        ExpeditionRepository expeditionRepository) {
         this.userRepository = userRepository;
         this.tankRepository = tankRepository;
         this.expeditionRepository = expeditionRepository;
+        this.log = LoggerFactory.getLogger(UserService.class);
     }
 
     /**
@@ -102,15 +107,20 @@ public class UserService {
 
     public User updateUser(Long userId, String tankName, Operation operation) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        Tank tank = tankRepository.findTankByName(tankName).orElseThrow(TankNotFoundException::new);
 
         switch (operation) {
-            case BUY -> buyTank(user, tank);
-            case SELL -> sellTank(user, tank);
+            case BUY -> buyTank(user, findTankByName(tankName));
+            case SELL -> sellTank(user, findTankByName(tankName));
+            case SLOT -> buySlot(user);
             default -> throw new OperationNotFoundException();
         }
 
         return userRepository.save(user);
+    }
+
+    private void buySlot(User user) {
+        user.subtractMoney(SLOT_PRICE);
+        user.increaseMaxHangarSize(1);
     }
 
     private void buyTank(User user, Tank tank) {
@@ -120,6 +130,7 @@ public class UserService {
                     "You already have this tank");
         if (user.getMoney() < price)
             throw new InsufficientFundsException();
+        log.info("{} bought the tank [{}] {}", user.getId(), tank.getId(), tank.getName());
 
         user.subtractMoney(price);
         user.addTank(tank);
@@ -135,7 +146,13 @@ public class UserService {
             throw new ResponseStatusException(HttpStatus.CONFLICT,
                     "Tank already in expedition");
 
+        log.info("{} sold the tank [{}] {}", user.getId(), tank.getId(), tank.getName());
+
         user.removeTank(tank);
         user.addMoney(tank.getPrice() / 2);
+    }
+
+    private Tank findTankByName(String tankName) {
+        return tankRepository.findTankByName(tankName).orElseThrow(TankNotFoundException::new);
     }
 }

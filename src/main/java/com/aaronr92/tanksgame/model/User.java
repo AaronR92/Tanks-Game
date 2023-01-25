@@ -65,7 +65,7 @@ public class User {
     }
 
     public Set<Tank> getTanks() {
-        checkSet();
+        checkSetIsNotNull();
         return tanks;
     }
 
@@ -88,6 +88,8 @@ public class User {
     }
 
     public void subtractMoney(int value) {
+        if (this.money < value)
+            throw new InsufficientFundsException();
         this.money -= value;
     }
 
@@ -112,9 +114,7 @@ public class User {
     }
 
     private void checkSet() {
-        if (tanks == null) {
-            tanks = new HashSet<>();
-        }
+        checkSetIsNotNull();
 
         if (tanks.size() == maxHangarSize) {
             throw new ResponseStatusException(
@@ -124,5 +124,10 @@ public class User {
         }
     }
 
+    private void checkSetIsNotNull() {
+        if (tanks == null) {
+            tanks = new HashSet<>();
+        }
+    }
 
 }

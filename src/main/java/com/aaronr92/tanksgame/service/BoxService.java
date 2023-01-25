@@ -6,6 +6,7 @@ import com.aaronr92.tanksgame.util.RewardResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Random;
 
@@ -38,7 +39,15 @@ public class BoxService {
                 response.setReward(String.valueOf(tankPrice));
                 response.setTank(tank.getName());
             } else {
-                user.addTank(tank);
+                try {
+                    user.addTank(tank);
+                } catch (ResponseStatusException e) {
+                    if (e.getMessage().equals("Your hangar is full")) {
+                        int tankPrice = tank.getPrice();
+                        user.addMoney(tankPrice);
+                        response.setReward(String.valueOf(tankPrice));
+                    }
+                }
                 response.setReward(" " + tank.getName());
             }
         } else {

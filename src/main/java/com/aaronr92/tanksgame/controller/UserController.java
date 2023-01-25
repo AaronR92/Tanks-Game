@@ -30,7 +30,7 @@ public class UserController {
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(
             @PathVariable Long id,
-            @RequestParam String tankName,
+            @RequestParam(required = false) String tankName,
             @RequestParam Operation operation
     ) {
         return ResponseEntity.ok(userService.updateUser(id, tankName, operation));
