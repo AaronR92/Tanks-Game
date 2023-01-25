@@ -121,6 +121,7 @@ public class UserService {
     private void buySlot(User user) {
         user.subtractMoney(SLOT_PRICE);
         user.increaseMaxHangarSize(1);
+        log.info("{} has increased their slot count by one", user.getId());
     }
 
     private void buyTank(User user, Tank tank) {
