@@ -32,6 +32,8 @@ public class BoxService {
         Object reward = getReward(id);
         RewardResponse response = new RewardResponse();
 
+        log.info("{} has opened a free box", id);
+
         if (reward instanceof Tank tank) {
             if (user.getTanks().contains(tank)) {
                 int tankPrice = tank.getPrice();

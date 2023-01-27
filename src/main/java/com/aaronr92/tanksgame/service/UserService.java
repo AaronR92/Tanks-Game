@@ -93,7 +93,8 @@ public class UserService {
      * @throws ResponseStatusException if a user has already opened the box today
      * @throws UserNotFoundException if user is not present
      */
-    public void updateBoxOpenTime(long id) throws ResponseStatusException, UserNotFoundException {
+    public void updateBoxOpenTime(long id)
+            throws ResponseStatusException, UserNotFoundException {
         User user = userRepository.findById(id)
                 .orElseThrow(UserNotFoundException::new);
 
